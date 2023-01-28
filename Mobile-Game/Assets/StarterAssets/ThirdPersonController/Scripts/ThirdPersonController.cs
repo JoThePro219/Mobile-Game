@@ -75,6 +75,8 @@ namespace StarterAssets
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
 
+        public bool isDead = false;
+
         // cinemachine
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -97,6 +99,7 @@ namespace StarterAssets
         private int _animIDJump;
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
+        private int _animIDDying;
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
@@ -156,9 +159,18 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
-            JumpAndGravity();
-            GroundedCheck();
-            Move();
+            if (isDead==false)
+            {
+
+                JumpAndGravity();
+                GroundedCheck();
+                Move();
+
+            }
+            else
+            {
+                _animator.SetBool(_animIDDying, true);
+            }
         }
 
         private void LateUpdate()
@@ -173,6 +185,7 @@ namespace StarterAssets
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+            _animIDDying = Animator.StringToHash("Dying");
         }
 
         private void GroundedCheck()
@@ -389,7 +402,14 @@ namespace StarterAssets
             }
         }
 
-        
+        public void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Killer"))
+                {
+                    isDead = true;
+                }
+
+        }
 
     }
 }

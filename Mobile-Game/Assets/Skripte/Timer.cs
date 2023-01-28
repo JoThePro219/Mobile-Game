@@ -51,4 +51,13 @@ public class Timer : MonoBehaviour
         currentTimeText.text = "0:00.00";
         active = false;
     }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Killer"))
+        {
+            active = false;
+            currentTimeText.color = Color.red;
+        }
+    }
 }
