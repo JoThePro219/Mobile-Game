@@ -18,7 +18,7 @@ public class ResetScene : MonoBehaviour
     }
 
     public void ResetCharacter()
-    {
+    {   
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
